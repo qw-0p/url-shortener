@@ -11,7 +11,7 @@ router.post(
   '/register',
   [
     check('email', 'Incorrect email').isEmail(),
-    check('pasowrd', 'Minimum password length 6 characters').isLength({ min: 6 })
+    check('password', 'Minimum password length 6 characters').isLength({ min: 6 })
   ],
   async (req, res) => {
     try {
