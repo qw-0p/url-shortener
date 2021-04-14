@@ -1,6 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useHttp } from '../hooks/http.hook'
 
 export const AuthPage = () => {
+  const { loading, error, request } = useHttp()
+  const [form, setForm] = useState({
+    email: '',
+    password: ''
+  })
+
+  const changeHandler = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value })
+  }
+
+  const registerHandler = async () => {
+    try {
+      const data = await request('/api/auth/register', 'POST', { ...form })
+      console.log('Data', data)
+    } catch (e) {}
+  }
+
   return (
     <div className='row'>
       <div className='col s6 offset-s3'>
@@ -17,6 +35,7 @@ export const AuthPage = () => {
                   name='email'
                   className='yellow-input'
                   autoComplete='off'
+                  onChange={changeHandler}
                 />
                 <label htmlFor='email'>Email</label>
               </div>
@@ -27,14 +46,19 @@ export const AuthPage = () => {
                   type='password'
                   name='password'
                   className='yellow-input'
+                  onChange={changeHandler}
                 />
                 <label htmlFor='password'>Password</label>
               </div>
             </div>
           </div>
           <div className='card-action'>
-            <button className='btn yellow darken-4'>Sign in</button>
-            <button className='btn yellow darken-4'>Sign up</button>
+            <button className='btn yellow darken-4' disabled={loading}>
+              Sign in
+            </button>
+            <button className='btn yellow darken-4' onClick={registerHandler} disabled={loading}>
+              Sign up
+            </button>
           </div>
         </div>
       </div>
